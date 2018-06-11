@@ -62,6 +62,18 @@ class App extends Component {
       }); 
     }
   }
+  // id와 body를 받아서 상태를 업데이트 (상태관리 컴포넌트)
+  // 역할과 책임을 나눈다.
+   // UI를 실제로 사용자에게 제공하는 컴포넌트 는 TodoItem.js에 있다.
+  handleTodoItemBodyUpdate = async (id, body) => {
+    this.setState({
+      loading: true
+    });
+    await todoAPI.patch(`/todos/${id}`, {
+      body
+    })
+    await this.fetchTodos();
+  }
 
   handleTodoItemComplete = async id => {
     this.setState({
@@ -97,6 +109,7 @@ class App extends Component {
             todos={todos} 
             handleTodoItemComplete={this.handleTodoItemComplete}
             handleTodoItemDelete={this.handleTodoItemDelete}
+            handleTodoItemBodyUpdate={this.handleTodoItemBodyUpdate}
           />
         )}
       </div>
