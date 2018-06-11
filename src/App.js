@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-
-
+import React, { Component } from 'react'; // 설치되어있는 라이브러리모듈
+import TodoList from './components/TodoList';//./ :src밑
 let count = 0;
 class App extends Component {
   state = { //클래스 필드 state라는 객체 만들기 
@@ -71,40 +70,14 @@ class App extends Component {
           <input type="text" value={newTodoBody} onChange={this.handleInputChange} />
           <button onClick={this.handleButtonClick}>추가</button>
         </label>
-        <ul>
-          {
-            todos.map(todo => (
-              <TodoItem 
-                {...todo}
-                onComplete={this.handleTodoItemComplete} 
-                onDelete={this.handleTodoItemDelete}
-              />
-            ))
-          }
-        </ul>
+        <TodoList 
+          todos={todos} 
+          handleTodoItemComplete={this.handleTodoItemComplete}
+          handleTodoItemDelete={this.handleTodoItemDelete}
+        />
       </div>
     );
   }
 }
-
-class TodoItem extends Component {
-  render(){
-    const {id, body, complete, onComplete, onDelete} = this.props;
-    return(
-      <li className={complete ? 'complete' : ''} key={id}>
-        {body}
-        <button onClick={e => {
-          onComplete(id);
-        }}>완료</button>
-
-        <button onClick={e => {
-          onDelete(id);          
-        }}>삭제</button>
-      </li>
-    )
-  }
-}
-
-
 
 export default App;
