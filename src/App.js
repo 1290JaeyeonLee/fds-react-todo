@@ -1,21 +1,39 @@
 import React, { Component } from 'react'; // 설치되어있는 라이브러리모듈
-import TodoList from './components/TodoList';//./ :src밑
-let count = 0;
+import TodoList from './components/TodoList'; // ./ :src밑
+import axios from 'axios';
+
+let count = 1;
+const TodoAPI = axios.create({
+  baseURL: 'https://topaz-serpent.glitch.me/'
+});
+
 class App extends Component {
   state = { //클래스 필드 state라는 객체 만들기 
+    loading: false,
     todos : [
-      {
-        id: count++,
-        body: 'React 공부',
-        complete: true
-      },
-      {
-        id: count++,
-        body: 'Redux 공부',
-        complete: false
-      },
+      // {
+      //   id: count++,
+      //   body: 'React 공부',
+      //   complete: true
+      // },
+      // {
+      //   id: count++,
+      //   body: 'Redux 공부',
+      //   complete: false
+      // },
     ],
     newTodoBody:''
+  }
+
+  async componentDidMount(){
+    this.setState({
+      loading: true
+    })
+    const res = await TodoAPI.get('/todos')
+    this.setState({
+      todos: res.data,
+      loading: false
+    })
   }
 
   handleInputChange = e => {
@@ -61,7 +79,7 @@ class App extends Component {
     })
   }
   render() {
-    const {todos, newTodoBody} = this.state;
+    const {todos, newTodoBody, loading} = this.state;
     return (
       <div>
         <h1>할 일 목록</h1>
@@ -70,11 +88,15 @@ class App extends Component {
           <input type="text" value={newTodoBody} onChange={this.handleInputChange} />
           <button onClick={this.handleButtonClick}>추가</button>
         </label>
-        <TodoList 
-          todos={todos} 
-          handleTodoItemComplete={this.handleTodoItemComplete}
-          handleTodoItemDelete={this.handleTodoItemDelete}
-        />
+        {loading ? (
+          <div>loading...</div>
+        ) : (
+          <TodoList 
+            todos={todos} 
+            handleTodoItemComplete={this.handleTodoItemComplete}
+            handleTodoItemDelete={this.handleTodoItemDelete}
+          />
+        )}
       </div>
     );
   }
