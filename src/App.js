@@ -2,8 +2,8 @@ import React, { Component } from 'react'; // 설치되어있는 라이브러리�
 import TodoList from './components/TodoList'; // ./ :src밑
 import axios from 'axios';
 
-let count = 1;
-const TodoAPI = axios.create({
+//let count = 1;
+const todoAPI = axios.create({
   baseURL: 'https://topaz-serpent.glitch.me/'
 });
 
@@ -26,10 +26,14 @@ class App extends Component {
   }
 
   async componentDidMount(){
+    await this.fetchTodos();
+  }
+  
+  fetchTodos = async () => {
     this.setState({
       loading: true
     })
-    const res = await TodoAPI.get('/todos')
+    const res = await todoAPI.get('/todos')
     this.setState({
       todos: res.data,
       loading: false
@@ -42,41 +46,39 @@ class App extends Component {
     });
   }
 
-  handleButtonClick = e => {
-    if(this.state.newTodoBody){ // 빈문자열은 falsy
+  handleButtonClick = async e => {
+    if(this.state.newTodoBody){
       const newTodo = {
-        body:this.state.newTodoBody,
-        complete: false,
-        id: count++
+        body: this.state.newTodoBody,
+        complete: false
       }
       this.setState({
-        todos: [
-          ...this.state.todos,
-          newTodo
-        ],
-        newTodoBody: ''
+        loading: true
       });
+      await todoAPI.post('/todos/',newTodo);
+      await this.fetchTodos();
+      this.setState({
+        newTodoBody: ''
+      }); 
     }
   }
 
-  handleTodoItemComplete = id => {
+  handleTodoItemComplete = async id => {
     this.setState({
-      todos: this.state.todos.map(t => {
-        const newTodo = {
-          ...t
-        };
-        if(t.id === id) {
-          newTodo.complete = true;
-        }
-        return newTodo
-      })
-    })  
+      loading: true
+    });
+    await todoAPI.patch(`/todos/${id}`,{
+      complete: true
+    });
+    await this.fetchTodos();
   }
 
-  handleTodoItemDelete = id => {
+  handleTodoItemDelete = async id => {
     this.setState({
-      todos: this.state.todos.filter(t => (id !== t.id))
-    })
+      loading: true
+    });
+    await todoAPI.delete(`/todos/${id}`);
+    await this.fetchTodos();
   }
   render() {
     const {todos, newTodoBody, loading} = this.state;
