@@ -4,7 +4,7 @@ import axios from 'axios';
 
 //let count = 1;
 const todoAPI = axios.create({
-  baseURL: 'https://topaz-serpent.glitch.me/'
+  baseURL: process.env.REACT_APP_API_URL
 });
 
 class App extends Component {
