@@ -4,9 +4,9 @@ export default class TodoList extends Component{
   render(){
     const {
       todos,
-      handleTodoItemComplete,
-      handleTodoItemDelete,
-      handleTodoItemBodyUpdate
+      onTodoComplete,
+      onTodoDelete,
+      onTodoBodyUpdate
      } = this.props;
     return(
       <ul>
@@ -14,9 +14,9 @@ export default class TodoList extends Component{
         todos.map(todo => (
           <TodoItem 
             {...todo}
-            onComplete={handleTodoItemComplete} 
-            onDelete={handleTodoItemDelete}
-            onBodyUpdate={handleTodoItemBodyUpdate}
+            onComplete={onTodoComplete} 
+            onDelete={onTodoDelete}
+            onBodyUpdate={onTodoBodyUpdate}
           />
         ))
       }
