@@ -1,107 +1,34 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React from 'react';
+import TodoPage from './pages/TodoPage';
+import LoginPage from './pages/LoginPage';
 
-import TodoList from './components/TodoList';
-import TodoForm from './components/TodoForm';
-
-const todoAPI = axios.create({
-  baseURL: process.env.REACT_APP_API_URL
-});
-
-class App extends Component {
+export default class App extends React.Component {
   state = {
-    loading: false,
-    todos: [
-      // {
-      //   id: count++,
-      //   body: 'React 공부',
-      //   complete: true
-      // },
-      // {
-      //   id: count++,
-      //   body: 'Redux 공부',
-      //   complete: false
-      // },
-    ]
+    page: 'login'
   }
+  // 1. 상태가 있는 쪽에서 상태를 바꾸는 함수를 만든다. ( 상태에 따라 다르게 만들어주는 페이지는 구조상 App에서 밖에 할 수 없다.)
+  // 2. render로 함수를 내려준다.
+  // 3. 로그인 페이지에서 함수를 받아서 쓴다. (위에서 받아온 것이니 props로 불러오기)
 
-  async componentDidMount() {
-    await this.fetchTodos();
-  }
-
-  fetchTodos = async () => {
+  // goToTodoPage = () => {}
+  handleLoginBtn = e => {
     this.setState({
-      loading: true
-    })
-    const res = await todoAPI.get('/todos')
-    this.setState({
-      todos: res.data,
-      loading: false
+      page: 'todo'
     });
   }
-
-  createTodo = async newTodoBody => {
-    if (newTodoBody) {
-      const newTodo = {
-        body: newTodoBody,
-        complete: false
-      };
-
-      this.setState({
-        loading: true
-      });
-      await todoAPI.post('/todos', newTodo);
-      await this.fetchTodos();
-    }
-  }
-
-  updateTodoBody = async (id, body) => {
-    this.setState({
-      loading: true
-    });
-    await todoAPI.patch(`/todos/${id}`, {
-      body
-    })
-    await this.fetchTodos();
-  }
-
-  completeTodo = async id => {
-    this.setState({
-      loading: true
-    });
-    await todoAPI.patch(`/todos/${id}`, {
-      complete: true
-    });
-    await this.fetchTodos();
-  }
-
-  deleteTodo = async id => {
-    this.setState({
-      loading: true
-    });
-    await todoAPI.delete(`/todos/${id}`);
-    await this.fetchTodos();
-  }
-
+  
   render() {
-    const {todos, loading} = this.state;
+    const {
+      page
+    } = this.state;
     return (
       <div>
-        <h1>할 일 목록</h1>
-        <TodoForm onCreate={this.createTodo} />
-        {loading ? (
-          <div>loading...</div>
+        {page === 'login' ? (
+          <LoginPage onLogin={this.handleLoginBtn}/>
         ) : (
-          <TodoList
-            todos={todos}
-            onTodoComplete={this.completeTodo}
-            onTodoDelete={this.deleteTodo}
-            onTodoBodyUpdate={this.updateTodoBody}
-          />
+          <TodoPage />
         )}
       </div>
-    );
+    )
   }
 }
-
-export default App;
