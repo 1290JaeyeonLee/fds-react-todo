@@ -1,36 +1,22 @@
 import React, { Component } from 'react';
 
 export default class LoginForm extends Component {
-  state = {
-    username: '',
-    password: ''
-  }
-  handleUsernameChange = e => {
-    this.setState({
-      username: e.target.value
-    });
-  }
-  handlePasswordChange = e => {
-    this.setState({
-      password: e.target.value
-    });
-  }
+  usernameRef = React.createRef();
+  passwordRef = React.createRef();
+
   handleLoginClick = async e => {
     const {onLogin} = this.props;
-    onLogin(this.state.name, this.state.password);
+    onLogin(this.usernameRef.current.value, this.passwordRef.current.value);
   }
   render(){ 
-    const{
-      username,
-      password
-    } = this.state;
+    const {onLogin} = this.props;
     return(
       <React.Fragment>
           <label>아이디
-            <input type="text" value={username} onChange={this.handleUsernameChange} />
+            <input type="text" ref={this.usernameRef} />
           </label>
           <label>비밀번호
-            <input type="password" value={password} onChange={this.handlePasswordChange} />
+            <input type="password" ref={this.passwordRef} />
           </label>
         <button onClick={this.handleLoginClick}>로그인</button>
       </React.Fragment>
