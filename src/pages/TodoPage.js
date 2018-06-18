@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-
 import TodoList from '../components/TodoList';
 import TodoForm from '../components/TodoForm';
-
-const todoAPI = axios.create({
-  baseURL: process.env.REACT_APP_API_URL
-});
+import todoAPI from '../todoAPI';
 
 export default class TodoPage extends Component {
   state = {

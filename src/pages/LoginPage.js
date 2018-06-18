@@ -1,12 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
+import LoginForm from '../components/LoginForm';
+import {UserConsumer} from '../contexts/UserContext';
 
-export default class LoginPage extends Component {
+export default class LoginPage extends React.Component {
   render(){
-    const{onLogin} = this.props;
-    return(
-      <div>
-        <button onClick={onLogin}>로그인</button>
-      </div>
+    return (
+      <UserConsumer>
+        {value => (
+          <LoginForm onLogin={value.login}/>
+        )}      
+      </UserConsumer>
     )
   }
 }
