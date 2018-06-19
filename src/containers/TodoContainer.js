@@ -6,7 +6,7 @@ import {TodoConsumer} from '../contexts/TodoContext';
 
 export default class TodoContainer extends Component {
   render() {
-    if(localStorage.getItem('token') {
+    if(localStorage.getItem('token')) {
       return (
         <TodoConsumer>
            {({todos, loading, createTodo, completeTodo, deleteTodo, updateTodoBody}) => (
