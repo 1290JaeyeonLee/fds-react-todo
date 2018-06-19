@@ -1,8 +1,8 @@
 import React from 'react';
 import LoginForm from '../components/LoginForm';
 import {UserConsumer} from '../contexts/UserContext';
-import {PageConsumer} from '../contexts/PageContext'
-
+import {PageConsumer} from '../contexts/PageContext';
+import OnMount from '../components/OnMount';
 export default class LoginFormContainer extends React.Component {
   render(){
     return (
@@ -10,20 +10,16 @@ export default class LoginFormContainer extends React.Component {
         {({login}) =>(
           <PageConsumer>
           {({goToTodoPage}) => (
-            <LoginForm onLogin={async (username, password) => {await login(username, password);
-            goToTodoPage();
-           }}/>
+            <React.Fragment>
+              <LoginForm onLogin={async (username, password) => {await login(username, password);
+              goToTodoPage();
+              }}/>
+              localStorage.getItem('token') && <OnMount onMount={goToTodoPage}/>
+            </React.Fragment>
           )}
           </PageConsumer>
         )}
       </UserConsumer>
-          // <LoginForm onLogin={(username, password) => {
-          //   console.log(username, password)
-          // }
-          // />
-          // 인터페이스
-          // 로그인폼의 사용법은 onLogin에 username과 password를 넘겨주는 것이다.
-
     )
   }
 }

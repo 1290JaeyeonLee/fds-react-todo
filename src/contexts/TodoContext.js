@@ -4,7 +4,7 @@ import todoAPI from '../todoAPI';
 const {Provider, Consumer} = React.createContext();
 
 // page와 관련된 '상태'와 '상태를 나타내는 함수'-> container component
-export class TodoProvider extends Component {
+class TodoProvider extends Component {
   state = {
     loading: false,
     todos: [
@@ -82,5 +82,5 @@ export class TodoProvider extends Component {
   }
 }
 
-export {Consumer as TodoConsumer}
+export {TodoProvider, Consumer as TodoConsumer}
 
