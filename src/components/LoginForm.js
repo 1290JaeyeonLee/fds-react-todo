@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
 
 export default class LoginForm extends Component {
-  usernameRef = React.createRef();
-  passwordRef = React.createRef();
 
-  handleLoginClick = async e => {
+  handleSubmit = e => {
+    e.preventDefault(); //안하면 페이지 새로고침이 된다.
+    const username = e.target.elements.username.value;
+    const password = e.target.elements.password.value;
     const {onLogin} = this.props;
-    onLogin(this.usernameRef.current.value, this.passwordRef.current.value);
+    onLogin(username, password);
   }
   render(){ 
-    const {onLogin} = this.props;
     return(
-      <React.Fragment>
+      <form onSubmit={this.handleSubmit}>
+        <h1>로그인 페이지</h1>
+        <input type="checkbox" defaultChecked={true} />
           <label>아이디
-            <input type="text" ref={this.usernameRef} />
+            <input type="text" defaultValue="fds" name="username" />
           </label>
           <label>비밀번호
-            <input type="password" ref={this.passwordRef} />
+            <input type="password" name="password" />
           </label>
-        <button onClick={this.handleLoginClick}>로그인</button>
-      </React.Fragment>
+        <button>로그인</button>
+      </form>
     )
   }
 }

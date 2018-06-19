@@ -16,12 +16,10 @@ class UserProvider extends React.Component {
         localStorage.setItem('token', res.data.token);
     
         // 페이지 전환
-        this.props.onLogin(); // 위쪽에서 함수를 주고, prop으로 받기
+        // this.props.onLogin(); // 위쪽에서 함수를 주고, prop으로 받기
     } catch(e) {
-      if(e.response) {
-        if(e.response.status === 400) {
+      if(e.response && e.response.status === 400) {
           alert('아이디 혹은 비밀번호가 일치하지 않습니다.');
-        }
       }
     }
   }

@@ -11,8 +11,7 @@ class PageProvider extends React.Component {
   // 2. render로 함수를 내려준다.
   // 3. 로그인 페이지에서 함수를 받아서 쓴다. (위에서 받아온 것이니 props로 불러오기)
 
-  // goToTodoPage = () => {}
-  handleLoginBtn = e => {
+  goToTodoPage = () => {
     this.setState({
       page: 'todo'
     });
@@ -20,7 +19,7 @@ class PageProvider extends React.Component {
   render(){
     const value = {
       page: this.state.page,
-      goToTodoPage: this.handleLoginBtn
+      goToTodoPage: this.goToTodoPage
     }
     return (
       <Provider value={value}>
